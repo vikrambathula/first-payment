@@ -18,9 +18,9 @@ pipeline{
 		}
 		stage("deploy dev"){
 			steps{
-				sshagent(['tomcat-new]){ 
+				sshagent(['tomcat-new']){ 
 				sh """
-					scp -o StrictHostKeyChecking-no target/myweb.war ubuntu@172.31.14.140:/home/ec2-user/apache-tomcat-8.5.72/webapps/ [//tomcat instance private ip]
+					scp -o StrictHostKeyChecking-no target/myweb.war ubuntu@172.31.14.140:/home/ubuntu/apache-tomcat-8.5.72/webapps/
 					ssh ubuntu@172.31.14.140:/home/ubuntu/apache-tomcat-8.5.72/shutdown.sh
 					ssh ubuntu@172.31.14.140:/home/ubuntu/apache-tomcat-8.5.72/startup.sh
 				"""
