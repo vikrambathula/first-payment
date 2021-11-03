@@ -1,24 +1,24 @@
-pipeline{
+pipeline {
 	agent any
 
-	environment{
+	environment {
 		PATH = "/opt/maven3/bin:$PATH"
 	}
 	stages{
-		stage("Git Checkout"){
+		stage("Git Checkout") {
 			steps{
 				git branch: 'main', url: 'https://github.com/vikrambathula/first-payment.git'
 			}
 		}
-		stage("Maven Build"){
+		stage("Maven Build") {
 			steps{
 				sh "mvn clean package"
 				sh "mv target/*.war target/myweb.war"
 			}
 		}
-		stage("deploy dev"){
+		stage("deploy dev") {
 			steps{
-				sshagent(['tomcat-new']){ 
+				sshagent(['tomcat-new']) { 
 				sh """
 					scp -o StrictHostKeyChecking-no target/myweb.war ubuntu@172.31.14.140:/home/ubuntu/apache-tomcat-8.5.72/webapps/
 					ssh ubuntu@172.31.14.140:/home/ubuntu/apache-tomcat-8.5.72/shutdown.sh
