@@ -1,1 +1,32 @@
 
+pipeline {
+	agent any
+
+	environment {
+		PATH = "/opt/maven3/bin:$PATH"
+	}
+	stages{
+		stage("Git Checkout") {
+			steps{
+				git branch: 'main', credentialsId: 'd85c7d27-22fd-42bf-8cbb-0a7c97933189', url: 'https://github.com/vikrambathula/first-payment.git'
+			}
+		}
+		stage("Maven Build") {
+			steps{
+				sh "mvn clean package"
+				sh "mv target/*.war target/myweb.war"
+			}
+		}
+		stage("deploy dev") {
+			steps{sshagent(['38133d8d-aa05-4dc0-9687-71fe09f81a7d']) {
+  
+		
+				sh """
+					scp -o StrictHostKeyChecking-no target/myweb.war ubuntu@172.31.47.97:/home/ubuntu/apache-tomcat-8.5.73/webapps/
+					ssh ubuntu@172.31.47.97:/home/ubuntu/apache-tomcat-8.5.73/shutdown.sh
+					ssh ubuntu@172.31.47.97:/home/ubuntu/apache-tomcat-8.5.73/startup.sh
+				"""
+				}
+			}
+		}
+}
