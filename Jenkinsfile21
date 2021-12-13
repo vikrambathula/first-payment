@@ -8,7 +8,7 @@ pipeline {
 	stages{
 		stage("Git Checkout") {
 			steps{
-				git branch: 'main', credentialsId: 'd85c7d27-22fd-42bf-8cbb-0a7c97933189', url: 'https://github.com/vikrambathula/first-payment.git'
+				git branch: 'main', credentialsId: 'mav-pro', url: 'https://github.com/vikrambathula/first-payment.git'
 			}
 		}
 		stage("Maven Build") {
@@ -18,7 +18,7 @@ pipeline {
 			}
 		}
 		stage("deploy dev") {
-			steps{sshagent(['38133d8d-aa05-4dc0-9687-71fe09f81a7d']) {
+			sshagent(['Tomcat-pro']) {
   
 		
 				sh """
