@@ -13,7 +13,7 @@ pipeline {
 		stage("Maven Build") {
 			steps{
 				sh "mvn clean install"
-				sh "mv target/*.war target/myweb.war"
+				sh "mv target/*.war target/myweb-1.1.war"
 			}
 		}
 		stage("deploy dev") {
